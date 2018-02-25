@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>wrapmarker@qiqitori.com</em:id>
+    <em:localized>
+      <Description>
+        <em:locale>de-DE</em:locale>
+        <em:name>Wrap Marker</em:name>
+        <em:description>Zeilenumbruch-Indikator. Zeichnet eine Linie zwischen dem 76. und 77. Zeichen im Mail-Editor.</em:description>
+      </Description>
+    </em:localized>
+    <em:localized>
+      <Description>
+        <em:locale>ja-JP</em:locale>
+        <em:name>Wrap Marker</em:name>
+        <em:description>メール作成画面で改行ガイド (縦の線) を表示するアドオン。デフォルトでは (半角) 第76文字目と第77文字の間に表示されます。(設定可能)</em:description>
+      </Description>
+    </em:localized>
+    <em:name>Wrap Marker</em:name>
+    <em:description>Shows a wrap indicator in the mail composition text field (vertical line after the 76th character, configurable)</em:description>
+    <em:version>1.0</em:version>
+    <em:creator>Qiqitori</em:creator>
+    <em:homepageURL>http://blog.qiqitori.com/?p=367</em:homepageURL>
+
+    <em:targetApplication>
+      <Description>
+        <em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id>
+        <em:minVersion>1.5</em:minVersion>
+        <em:maxVersion>61.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+  </Description>      
+</RDF>

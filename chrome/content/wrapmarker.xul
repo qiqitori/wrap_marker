@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://wrapmarker/locale/wrapmarker.dtd">
+<overlay id="sample" 
+xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <script type="application/javascript" src="chrome://wrapmarker/content/overlay.js"/><!-- A reference to your JavaScript file -->
+</overlay>

@@ -1,0 +1,18 @@
+#wrapmarker-marker {
+    position: absolute;
+    border-width: 0 1px 0 0; /* right border */
+    border-style: solid;
+    height: 100%;
+    top: 0;
+    pointer-events: none;
+}
+
+#wrapmarker-editable-div {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+}
+#wrapmarker-editable-div:focus {
+    outline: 0;
+}

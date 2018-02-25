@@ -1,0 +1,5 @@
+content     wrapmarker    chrome/content/
+overlay chrome://messenger/content/messengercompose/messengercompose.xul chrome://wrapmarker/content/wrapmarker.xul
+locale wrapmarker en-US chrome/locale/en-US/
+locale wrapmarker ja-JP chrome/locale/ja-JP/
+locale wrapmarker de-DE chrome/locale/de-DE/
