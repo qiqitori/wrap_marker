@@ -6,25 +6,7 @@ var WrapMarker = {
         if (document.getElementById("content-frame").getAttribute("editortype") != "textmail")
             return;
 
-        /* Just getting editor the straight-forward way doesn't work, because editor turns into a dead object after a short bit of background processing.
-        * After some digging, we found out that the first editor has empty body.innerHTML.
-        * So let's wait for body.innerHTML and then assign editor afterwards */
-        //this.timer_var = window.setInterval(this.await_inner_html, 100);
-        this.do_actual_work();
-    },
-
-    await_inner_html: function() {
-        if (document.getElementById("content-frame").contentWindow.document.body.innerHTML == "")
-            return;
-        else {
-            window.clearInterval(WrapMarker.timer_var);
-            WrapMarker.do_actual_work();
-        }
-    },
-
-    do_actual_work: function() {
-        var editor = null;
-        editor = document.getElementById("content-frame").contentWindow.document;
+        var editor = document.getElementById("content-frame").contentWindow.document;
         var container_div_prefix = '<div id="wrapmarker-container" tabindex="-1">'
         var editable_div_prefix = '<div contenteditable="true" id="wrapmarker-editable-div">';
         var div_suffix = '</div>';
@@ -78,19 +60,39 @@ var WrapMarker = {
         var style_element = editor.createElement("style");
         style_element.innerHTML = editor_stylesheet;
         editor.head.appendChild(style_element);
+        
+        editor.getElementById("wrapmarker-editable-div").focus();
+        console.log(editor.activeElement);
 
-        /* Not sure if it's still possible to focus wrapmarker-container, but if yes, put focus on wrapmarker-editable-div instead */
-        var wrapmarker_container_event_function = function(e) {
-            editor.getElementById("wrapmarker-editable-div").focus();
+        /* Thunderbird is very intent on us not getting focus.
+         * First it blurs to <body>,
+         * then doesn't allow us to focus anything else.
+         * We run a quick recurring timer if we fail at getting focus
+         * this timer repeats until we've got the correct focus */
+        var refocus = function(e) {
+            var refocus2_timer;
+            var element = editor.getElementById("wrapmarker-editable-div");            
+            element.removeEventListener("blur", refocus);
+//             console.log("got here");
+//             console.log(editor.activeElement);
+            var refocus2 = function(e) {
+//                 console.log("got into 2");
+                element.focus();
+                if (editor.activeElement == element)
+                    window.clearInterval(refocus2_timer);
+            }
+            element.focus();
+            if (editor.activeElement != element) { // yes, this happens
+                refocus2_timer = window.setInterval(refocus2, 25); // so retry until we succeed
+            }
         };
-        editor.getElementById("wrapmarker-container").addEventListener("focus", wrapmarker_container_event_function);
-        editor.getElementById("wrapmarker-editable-div").focus(); // Otherwise <html> will be focused
+        editor.getElementById("wrapmarker-editable-div").addEventListener("blur", refocus);
     },
 
     handleEvent: function(e) {
         switch (e.type) {
             case 'compose-window-init':
-                debugger;
+                //debugger;
                 document.documentElement.addEventListener('compose-window-close', this, false);
                 window.addEventListener('unload', this, false);
                 gMsgCompose.RegisterStateListener(this);
@@ -109,11 +111,10 @@ var WrapMarker = {
     },
 
     // nsIMsgComposeStateListener
-    NotifyComposeFieldsReady: function() {
-        // do it after all fields are constructed completely.
+    NotifyComposeFieldsReady: function() {},
+    NotifyComposeBodyReady: function() {
         this.init();
     },
-    NotifyComposeBodyReady: function() {},
     ComposeProcessDone: function() {},
     SaveInFolderDone: function() {}
 }
